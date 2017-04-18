@@ -1,2 +1,24 @@
 ---
 # tasks file for johncming.zsh
+- name: Install Prerequisite
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - git
+    - zsh
+
+- name: Download oh-my-zsh
+  git:
+    repo: https://github.com/robbyrussell/oh-my-zsh.git
+    dest: "{{ ansible_user_dir }}/.oh-my-zsh"
+
+- name: Copy configuration
+  copy:
+    remote_src: yes
+    src: "{{ ansible_user_dir }}/.oh-my-zsh/templates/zshrc.zsh-template"
+    dest: "{{ ansible_user_dir }}/.zshrc"
+
+- name: Change shell
+  become: yes
+  command: chsh -s /bin/zsh
