@@ -1,6 +1,7 @@
 ---
 # tasks file for johncming.zsh
 - name: Install Prerequisite
+  become: yes
   apt:
     name: "{{ item }}"
     state: present
@@ -21,4 +22,6 @@
 
 - name: Change shell
   become: yes
-  command: chsh -s /bin/zsh
+  user:
+    name: "{{ ansible_user_id }}"
+    shell: /bin/zsh
